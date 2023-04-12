@@ -32,6 +32,10 @@ defmodule MaxoAdapt do
     end
   end
 
+  @doc ~S"See `Adapter.behaviour/1`."
+  @spec behavior(callbacks :: [{:do, term}]) :: term
+  defmacro behavior(do: block), do: setup(__CALLER__.module, block)
+
   @doc ~S"""
   Define the adapter behaviour through callbacks.
   A `@doc` tag can be set for each `@callback`.
@@ -84,13 +88,13 @@ defmodule MaxoAdapt do
 
     case Keyword.get(opts, :mode, @default_mode) do
       :compile ->
-        {__MODULE__.Compile, config}
+        {__MODULE__.Impl.Compile, config}
 
       :get_env ->
-        {__MODULE__.GetEnv, config}
+        {__MODULE__.Impl.GetEnv, config}
 
       :get_compiled ->
-        {__MODULE__.GetCompiled, config}
+        {__MODULE__.Impl.GetCompiled, config}
 
       m ->
         raise CompileError,
