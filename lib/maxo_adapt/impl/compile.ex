@@ -72,63 +72,23 @@ defmodule MaxoAdapt.Impl.Compile do
   @doc false
   @spec recompile_module(module, [{atom, non_neg_integer()}], module) :: :ok
   def recompile_module(module, callbacks, target) do
-    with {mod, data, file} <- :code.get_object_code(module),
-         {:ok, {^mod, chunks}} <- :beam_lib.chunks(data, [:abstract_code]),
-         {_, code} <- Keyword.get(chunks, :abstract_code) do
-      :code.purge(module)
-      :code.delete(module)
+    mod = Module.concat(MaxoAdapt, module)
+    :code.purge(mod)
+    :code.delete(mod)
 
-      updated_code = replace_compiled_delegates(code, callbacks, target)
-
-      with {:ok, ^mod, bin} <- :compile.forms(updated_code) do
-        :code.load_binary(mod, file, bin)
-        :ok
-      end
-    else
-      _ ->
-        mod = Module.concat(MaxoAdapt, module)
-        :code.purge(mod)
-        :code.delete(mod)
-
-        ast =
-          quote do
-            defmodule unquote(mod) do
-              @moduledoc false
-              unquote(regenerate_redirect(callbacks, target))
-            end
-          end
-
-        MaxoAdapt.Log.inspect(ast, label: "Compile.recompile_module - AST")
-        MaxoAdapt.Log.puts(Macro.to_string(ast))
-
-        Code.compile_quoted(ast)
-        :ok
-    end
-  end
-
-  @spec replace_compiled_delegates(term, [{atom, non_neg_integer()}], module) :: term
-  defp replace_compiled_delegates(ast, callbacks, target) do
-    Enum.map(ast, fn
-      {:function, l, :__adapter__, 0, [{:clause, l, [], [], [{:atom, 0, _}]}]} ->
-        {:function, l, :__adapter__, 0, [{:clause, l, [], [], [{:atom, 0, target}]}]}
-
-      a = {:function, _, name, arity, [data]} ->
-        if {name, arity} in callbacks do
-          {:clause, l, vars, [],
-           [{:call, l, {:remote, l, {:atom, l, _target}, {:atom, l, function}}, vars}]} = data
-
-          {:function, l, name, arity,
-           [
-             {:clause, l, vars, [],
-              [{:call, l, {:remote, l, {:atom, 0, target}, {:atom, l, function}}, vars}]}
-           ]}
-        else
-          a
+    ast =
+      quote do
+        defmodule unquote(mod) do
+          @moduledoc false
+          unquote(regenerate_redirect(callbacks, target))
         end
+      end
 
-      a ->
-        a
-    end)
+    MaxoAdapt.Log.inspect(ast, label: "Compile.recompile_module - AST")
+    MaxoAdapt.Log.puts(Macro.to_string(ast))
+
+    Code.compile_quoted(ast)
+    :ok
   end
 
   @spec generate_compiled_delegates(MaxoAdapt.Utility.behavior(), module) :: term
