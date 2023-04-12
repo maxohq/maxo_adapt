@@ -84,9 +84,7 @@ defmodule MaxoAdapt.Impl.Compile do
         end
       end
 
-    MaxoAdapt.Log.inspect(ast, label: "Compile.recompile_module - AST")
-    MaxoAdapt.Log.puts(Macro.to_string(ast))
-
+    MaxoAdapt.Log.inspect_ast(ast, "Compile.recompile_module - AST")
     Code.compile_quoted(ast)
     :ok
   end
