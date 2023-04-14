@@ -30,8 +30,8 @@ defmodule MaxoAdapt.Impl.GetEnv do
       end
 
       @doc false
-      @spec __adapter__ :: module | nil
-      def __adapter__, do: Application.get_env(unquote(app), unquote(key), unquote(default))
+      @spec __maxo_adapt__ :: module | nil
+      def __maxo_adapt__, do: Application.get_env(unquote(app), unquote(key), unquote(default))
 
       @doc ~S"""
       Configure a new adapter implementation.
@@ -45,7 +45,7 @@ defmodule MaxoAdapt.Impl.GetEnv do
       """
       @spec configure(module) :: :ok
       def configure(adapter) do
-        with false <- __adapter__() == adapter && :ok,
+        with false <- __maxo_adapt__() == adapter && :ok,
              :ok <-
                unquote(
                  MaxoAdapt.Utility.generate_validation(
@@ -74,7 +74,7 @@ defmodule MaxoAdapt.Impl.GetEnv do
         def unquote(key)(unquote_splicing(vars))
 
         def unquote(key)(unquote_splicing(vars)) do
-          if adapter = __adapter__(),
+          if adapter = __maxo_adapt__(),
             do: adapter.unquote(key)(unquote_splicing(vars)),
             else: unquote(error)
         end

@@ -30,8 +30,8 @@ defmodule MaxoAdapt.Impl.GetCompiled do
       end
 
       @doc false
-      @spec __adapter__ :: module | nil
-      def __adapter__, do: @adapter
+      @spec __maxo_adapt__ :: module | nil
+      def __maxo_adapt__, do: @adapter
 
       @doc ~S"""
       Configure a new adapter implementation.

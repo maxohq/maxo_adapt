@@ -32,8 +32,8 @@ defmodule MaxoAdapt.Impl.Compile do
       unquote(generate_compiled_delegates(callbacks, Module.concat(MaxoAdapt, config.adapter)))
 
       @doc false
-      @spec __adapter__ :: module | nil
-      def __adapter__, do: unquote(nil)
+      @spec __maxo_adapt__ :: module | nil
+      def __maxo_adapt__, do: unquote(config.adapter)
 
       @doc ~S"""
       Configure a new adapter implementation.
@@ -47,7 +47,7 @@ defmodule MaxoAdapt.Impl.Compile do
       """
       @spec configure(module) :: :ok
       def configure(adapter) do
-        with false <- __adapter__() == adapter && :ok,
+        with false <- __maxo_adapt__() == adapter && :ok,
              :ok <-
                unquote(
                  MaxoAdapt.Utility.generate_validation(
@@ -80,6 +80,10 @@ defmodule MaxoAdapt.Impl.Compile do
       quote do
         defmodule unquote(mod) do
           @moduledoc false
+          @doc false
+          @spec __maxo_adapt__ :: module | nil
+          def __maxo_adapt__, do: unquote(target)
+
           unquote(regenerate_redirect(callbacks, target))
         end
       end
@@ -96,7 +100,6 @@ defmodule MaxoAdapt.Impl.Compile do
 
       quote do
         unquote(acc)
-
         unquote(doc)
         unquote(spec)
         def unquote(key)(unquote_splicing(vars))
@@ -107,15 +110,14 @@ defmodule MaxoAdapt.Impl.Compile do
 
   @spec generate_stubs(MaxoAdapt.Utility.behavior(), term) :: term
   defp generate_stubs(callbacks, result) do
-    Enum.reduce(callbacks, nil, fn {key, %{spec: spec, doc: docs, args: a}}, acc ->
+    Enum.reduce(callbacks, nil, fn {key, %{spec: spec, doc: docs, args: args}}, acc ->
       quote do
         unquote(acc)
-
         unquote(docs)
         unquote(spec)
-        def unquote(key)(unquote_splicing(Enum.map(a, &Macro.var(&1, nil))))
+        def unquote(key)(unquote_splicing(Enum.map(args, &Macro.var(&1, nil))))
 
-        def unquote(key)(unquote_splicing(Enum.map(a, &Macro.var(:"_#{&1}", nil)))),
+        def unquote(key)(unquote_splicing(Enum.map(args, &Macro.var(:"_#{&1}", nil)))),
           do: unquote(result)
       end
     end)
