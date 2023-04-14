@@ -23,6 +23,10 @@ defmodule MaxoAdapt.Impl.GetCompiled do
           [MaxoAdapt] #{inspect(__MODULE__)} is not configured.
               Mode `:get_compiled` adapters can not be changed at runtime.
               Use `mode: :compile` or `mode: :get_env` to allow runtime reconfiguration.
+              Tested with `app: :#{unquote(app)}, :key: :#{unquote(key)}`
+
+              Configure in `config.exs` with:
+              `config :#{unquote(app)}, #{unquote(key)}: DefaultAdapterModule`
           """
         end)
 
