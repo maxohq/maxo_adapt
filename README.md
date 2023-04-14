@@ -25,7 +25,13 @@ In addition to these basic qualities it is:
 - Spec / Dialyzer _(each stub has a spec matching the `@callback`)_
 - IDE (intelligent code completion / intellisense) compatible [stubs]
 
-## Usage
+## Guides
+
+- [Intro](https://github.com/maxohq/maxo_adapt/tree/main/guides/intro.md)
+- [Configuration](https://github.com/maxohq/maxo_adapt/tree/main/guides/configuration.md)
+- [Debugging](https://github.com/maxohq/maxo_adapt/tree/main/guides/debugging.md)
+
+## Quick start
 
 ```elixir
 def deps do
@@ -80,11 +86,5 @@ SessionRepo.configure(SessionRepo.PostgreSQL)
 # Runtime switching possible
 SessionRepo.configure(SessionRepo.Redis)
 ```
-
-## Guides
-
-- [Intro](https://github.com/maxohq/maxo_adapt/tree/main/guides/intro.md)
-- [Configuration](https://github.com/maxohq/maxo_adapt/tree/main/guides/configuration.md)
-- [Debugging](https://github.com/maxohq/maxo_adapt/tree/main/guides/debugging.md)
 
 The docs can be found at <https://hexdocs.pm/maxo_adapt>.
