@@ -61,7 +61,12 @@ defmodule MaxoAdapt do
 
   @spec parse_config(module, Keyword.t()) :: {module, term}
   defp parse_config(module, opts) do
-    adapter = module |> inspect() |> String.split(".") |> Enum.map(&Macro.underscore/1)
+    adapter =
+      module
+      |> Atom.to_string()
+      |> String.replace_leading("Elixir.", "")
+      |> String.split(".")
+      |> Enum.map(&Macro.underscore/1)
 
     {default, opts} = Keyword.pop(opts, :default)
     {app, opts} = Keyword.pop(opts, :app, @default_app)
