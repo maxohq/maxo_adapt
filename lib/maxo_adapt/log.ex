@@ -1,5 +1,5 @@
 defmodule MaxoAdapt.Log do
-  @active true
+  @active Application.compile_env(:maxo_adapt, :debug, false)
 
   if @active do
     def inspect_ast(ast, location) do
