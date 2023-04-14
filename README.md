@@ -63,7 +63,7 @@ defmodule SessionRepo.PostgreSQL do
   @behaviour SessionRepo
 
   @impl SessionRepo
-  def get(token), do: ...
+  def get(token), do: {:ok, {token, :psql}}
 end
 
 # Redis implementation
@@ -71,7 +71,7 @@ defmodule SessionRepo.Redis do
   @behaviour SessionRepo
 
   @impl SessionRepo
-  def get(token), do: ...
+  def get(token), do: {:ok, {token, :redis}}
 end
 
 # Now configure
