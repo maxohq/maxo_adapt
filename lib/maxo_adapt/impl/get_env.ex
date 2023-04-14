@@ -13,8 +13,6 @@ defmodule MaxoAdapt.Impl.GetEnv do
       validate: validate
     } = config
 
-    dbg()
-
     err =
       if error == :raise do
         quote do: raise("#{__MODULE__} not configured.")

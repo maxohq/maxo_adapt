@@ -7,7 +7,7 @@ defmodule MaxoAdaptTest do
       Code.compile_quoted(
         quote do
           defmodule InvalidMode do
-            use Adapter, mode: :flurp
+            use MaxoAdapt, mode: :flurp
 
             behaviour do
               @doc ~S"A color's RGB value."
