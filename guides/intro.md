@@ -1,4 +1,4 @@
-## Guide
+## Intro
 
 First define the module that can use different adapters.
 The behaviour of the adapter is defined with `@callback` like normal,
