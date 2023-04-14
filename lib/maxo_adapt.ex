@@ -1,7 +1,7 @@
 defmodule MaxoAdapt do
   @moduledoc false
 
-  @default_app :adapter
+  @default_app :maxo_adapt
   @default_mode :compile
   @default_log :debug
   @default_random true
@@ -61,7 +61,7 @@ defmodule MaxoAdapt do
 
   @spec parse_config(module, Keyword.t()) :: {module, term}
   defp parse_config(module, opts) do
-    adapter = module |> to_string |> String.split(".") |> Enum.map(&Macro.underscore/1)
+    adapter = module |> inspect() |> String.split(".") |> Enum.map(&Macro.underscore/1)
 
     {default, opts} = Keyword.pop(opts, :default)
     {app, opts} = Keyword.pop(opts, :app, @default_app)

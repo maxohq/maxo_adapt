@@ -2,7 +2,7 @@
 
 First define the module that can use different adapters.
 The behaviour of the adapter is defined with `@callback` like normal,
-but this time wrapped in a `behavio[u]r` macro.
+but this time wrapped in a `behaviour` macro.
 
 ```elixir
 defmodule SessionRepo do
@@ -39,3 +39,109 @@ from the defined behaviour.
 
 On configuration either the application config updated to reflect the change
 or in `:compile` mode the module is purged and recompiled with the new adapter.
+
+## Mode: :compile
+
+- great balance between flexibility at runtime and performance
+- changes require a runtime module recompilation,
+  but this is uncritical and happens very fast
+
+```
+          ┌────────────────────────────────────────────────┐
+          │                 :compile mode                  │
+          │                                                │
+          └────────────────────────────────────────────────┘
+
+
+   ┌───────────────────────────┐                ┌────────────────┐
+   │        SessionRepo        │                │                │
+   │                           │                │   PsqlRepo     │
+   │- behaviour                │                │                │
+   │  - spec get!              │        ┌──────▶│- get!          │
+   │  - spec store!            │        │       │- store!        │
+   └───────────────────────────┘        │       │                │
+                 │                      │       └────────────────┘
+                 ▼                      │
+┌────────────────────────────────┐      │       ┌────────────────┐
+│      MaxoAdapt.SessionRepo     │      │       │                │
+│                                │      │       │                │
+│ - generated module             │      │       │   RedisRepo    │
+│ - re-generated on re-config    │──────┘       │                │
+│                                │              │- get!          │
+│ - __maxo_adapt__ -> PsqlRepo   │              │- store!        │
+│                                │              │                │
+└────────────────────────────────┘              └────────────────┘
+```
+
+## Mode: :compile_env
+
+- fastest implementation
+- linking happens at compile-time
+- no runtime changes possible!
+
+```
+         ┌────────────────────────────────────────────────┐
+         │               :compile_env mode                │
+         │                                                │
+         └────────────────────────────────────────────────┘
+       ┌───────────────────────────────────────────────────┐
+       │                    config.exs                     │
+       │                                                   │
+       │    config :maxo_adapt, session_repo: PsqlRepo     │
+       │                                                   │
+       └───────────────────────────────────────────────────┘
+
+   ┌───────────────────────────┐                ┌────────────────┐
+   │        SessionRepo        │                │                │
+   │                           │                │   PsqlRepo     │
+   │- behaviour                │                │                │
+   │  - spec get!              │        ┌──────▶│- get!          │
+   │  - spec store!            │        │       │- store!        │
+   └───────────────────────────┘        │       │                │
+                 │                      │       └────────────────┘
+                 ▼                      │
+┌────────────────────────────────┐      │       ┌────────────────┐
+│      MaxoAdapt.SessionRepo     │      │       │                │
+│                                │      │       │                │
+│ - generated module             │      │       │   RedisRepo    │
+│ - NO RUNTIME CHANGES!          │──────┘       │                │
+│                                │              │- get!          │
+│ - __maxo_adapt__ -> PsqlRepo   │              │- store!        │
+│                                │              │                │
+└────────────────────────────────┘              └────────────────┘
+```
+
+## Mode: :get_env
+
+- changes through `Application.set_env(...)`
+- fastest runtime changes
+- least performant
+
+```
+        ┌────────────────────────────────────────────────┐
+        │                 :get_env mode                  │
+        │                                                │
+        └────────────────────────────────────────────────┘
+      ┌───────────────────────────────────────────────────┐
+      │                    config.exs                     │
+      │                                                   │
+      │    config :maxo_adapt, session_repo: PsqlRepo     │
+      │                                                   │
+      └───────────────────────────────────────────────────┘
+┌─────────────────────────────────┐          ┌────────────────┐
+│        SessionRepo              │          │                │
+│                                 │          │   PsqlRepo     │
+│- behaviour                      │          │                │
+│  - spec get!                    │    ┌────▶│- get!          │
+│  - spec store!                  │    │     │- store!        │
+│                                 │    │     │                │
+│- __maxo_adapt__ ->              │    │     └────────────────┘
+│                                 │────┘     ┌────────────────┐
+│      Application.get_env(...)   │          │                │
+│                                 │          │   RedisRepo    │
+│- get! -> __maxo_adapt__().get!  │          │                │
+│- store! -> _maxo_adapt_().store!│          │- get!          │
+│                                 │          │- store!        │
+│                                 │          │                │
+└─────────────────────────────────┘          └────────────────┘
+```

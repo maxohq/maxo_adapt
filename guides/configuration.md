@@ -4,13 +4,16 @@ Adapters come with the following configuration options:
 
 - `:default` (_none_),
   a default implementation to link to at first compile.
+
 - `:error` (`:module_name_not_configured`),
   an atom that is returned in an error tuple when the adapter has not been configured.
   Can be set to `:raise` to raise instead of returning an error tuple.
+
 - `:log` (`:info`),
   the log level of the configuration message.
   The following levels are allowed: `:debug`, `:info`, and `:notice`.
   To disable logging of configuration set `log: false`.
+
 - `:mode` (`:compile`),
   determines the implementation type of the adapter pattern.
   The following modes are supported:
@@ -18,6 +21,7 @@ Adapters come with the following configuration options:
   - `:compile`, the stubs are replaced each time by recompiling the module.
     This gives hardcoded performance
     while still allowing changes of adapter at runtime.
+
   - `:compile_env`, the macro hardcodes the adapter at compile time.
     This works by using `Application.compile_env`.
     (or `Application.get_env` below _Elixir 1.11_.)
@@ -25,7 +29,8 @@ Adapters come with the following configuration options:
     and defdelegates.
     It is fast, but requires the adapter to be set at compile
     and can no longer be changed at runtime like startup.
-  - `:get_env`, the macro generates a `Application.get_env` pattern.
+
+  - `:get_env`, the macro generates an `Application.get_env` pattern.
     Looking up the set adapter for each call, allowing for easy runtime switching.
     This is slower in use than a `:compile` and `:compile_env`,
     but the fastest to re-configure
@@ -37,6 +42,7 @@ Adapters come with the following configuration options:
   before the adapter is configured.
   To avoid this causing issues the hardcoded value is wrapped in random.
   This forces dialyzer to respect the spec instead of the implementation.
+
 - `:validate` (`true`),
   whether to perform configuration validation.
   This will verify a given implementation actually implements the complete behaviour.
@@ -46,6 +52,6 @@ Adapters come with the following configuration options:
   and allow setting incomplete implementations.
 
 When using `:compile_env` or `:get_env` the implementation will default to using
-`:adapter` as app and the module name as key when doing configuration lookups.
+`:maxo_adapt` as app and the module name as key when doing configuration lookups.
 
 To define a custom config location pass `app: :my_app, key: :my_repo`.
