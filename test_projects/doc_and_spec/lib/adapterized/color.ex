@@ -1,7 +1,7 @@
 defmodule Color do
   use MaxoAdapt, random: true
 
-  behavior do
+  behaviour do
     @doc ~S"A color's RGB value."
     @callback rgb :: {0..255, 0..255, 0..255}
   end

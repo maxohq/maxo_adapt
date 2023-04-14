@@ -39,7 +39,7 @@ end
 defmodule SessionRepo do
   use MaxoAdapt
 
-  # Define the adapter behavior
+  # Define the adapter behaviour
   behaviour do
     @doc ~S"""
     Lookup a sessions based on token.
@@ -136,7 +136,7 @@ To define a custom config location pass `app: :my_app, key: :my_repo`.
 ## Guide
 
 First define the module that can use different adapters.
-The behavior of the adapter is defined with `@callback` like normal,
+The behaviour of the adapter is defined with `@callback` like normal,
 but this time wrapped in a `behavio[u]r` macro.
 
 ```elixir
@@ -164,13 +164,13 @@ end
 
 The functionality is quite simple.
 
-Inside the `behavio[u]r` block each `@callback` is tracked
+Inside the `behaviour` block each `@callback` is tracked
 and documentation and spec recorded.
 
-After the `behavio[u]r` block each recorded callback will generate a stub.
+After the `behaviour` block each recorded callback will generate a stub.
 Each stub will be given the recorded documentation and spec.
 This allows functions in the module to call the functions
-from the defined behavio[u]r.
+from the defined behaviour.
 
 On configuration either the application config updated to reflect the change
 or in `:compile` mode the module is purged and recompiled with the new adapter.

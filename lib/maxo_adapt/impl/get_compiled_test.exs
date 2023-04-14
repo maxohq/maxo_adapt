@@ -4,7 +4,7 @@ defmodule MaxoAdapt.Impl.GetCompiledTest do
   defmodule Color do
     use MaxoAdapt, mode: :get_compiled, default: MaxoAdapt.Impl.GetCompiledTest.Blue
 
-    behavior do
+    behaviour do
       @doc ~S"A color's RGB value."
       @callback rgb :: {0..255, 0..255, 0..255}
     end

@@ -2,7 +2,7 @@ defmodule MaxoAdapt.Impl.GetEnv do
   @moduledoc false
 
   @doc false
-  @spec generate(term, MaxoAdapt.Utility.behavior(), MaxoAdapt.Utility.config()) :: term
+  @spec generate(term, MaxoAdapt.Utility.behaviour(), MaxoAdapt.Utility.config()) :: term
   def generate(code, callbacks, config) do
     %{
       app: app,
@@ -12,6 +12,8 @@ defmodule MaxoAdapt.Impl.GetEnv do
       default: default,
       validate: validate
     } = config
+
+    dbg()
 
     err =
       if error == :raise do
@@ -62,7 +64,7 @@ defmodule MaxoAdapt.Impl.GetEnv do
     end
   end
 
-  @spec generate_implementation(MaxoAdapt.Utility.behavior(), term) :: term
+  @spec generate_implementation(MaxoAdapt.Utility.behaviour(), term) :: term
   defp generate_implementation(callbacks, error) do
     Enum.reduce(callbacks, nil, fn {key, %{spec: spec, doc: doc, args: a}}, acc ->
       vars = Enum.map(a, &Macro.var(&1, nil))

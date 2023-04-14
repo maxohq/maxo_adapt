@@ -1,7 +1,7 @@
 defmodule BenchCompiled do
   use MaxoAdapt, default: BenchCompiled.A, mode: :compile, log: false
 
-  behavior do
+  behaviour do
     @doc ~S"Some docs"
     @callback some_function :: boolean
   end

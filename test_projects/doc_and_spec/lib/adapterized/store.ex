@@ -1,7 +1,7 @@
 defmodule Storage do
   use MaxoAdapt, mode: :get_env, random: true
 
-  behavior do
+  behaviour do
     @doc ~S"Storage type."
     @callback type :: :persistent | :cache
   end

@@ -2,12 +2,12 @@ defmodule MaxoAdapt.Impl.Compile do
   @moduledoc false
 
   @doc false
-  @spec generate(term, MaxoAdapt.Utility.behavior(), MaxoAdapt.Utility.config()) :: term
+  @spec generate(term, MaxoAdapt.Utility.behaviour(), MaxoAdapt.Utility.config()) :: term
   def generate(code, callbacks, config)
 
   def generate(code, callbacks, config) do
     %{default: default, error: error, log: log, random: random, validate: validate} = config
-    simple_callbacks = Enum.map(callbacks, fn {k, %{args: a}} -> {k, Enum.count(a)} end)
+    simple_callbacks = Enum.map(callbacks, fn {k, %{args: args}} -> {k, Enum.count(args)} end)
 
     stubs =
       if default do
@@ -33,7 +33,7 @@ defmodule MaxoAdapt.Impl.Compile do
 
       @doc false
       @spec __maxo_adapt__ :: module | nil
-      def __maxo_adapt__, do: unquote(config.adapter)
+      def __maxo_adapt__, do: unquote(nil)
 
       @doc ~S"""
       Configure a new adapter implementation.
@@ -93,7 +93,7 @@ defmodule MaxoAdapt.Impl.Compile do
     :ok
   end
 
-  @spec generate_compiled_delegates(MaxoAdapt.Utility.behavior(), module) :: term
+  @spec generate_compiled_delegates(MaxoAdapt.Utility.behaviour(), module) :: term
   defp generate_compiled_delegates(callbacks, target) do
     Enum.reduce(callbacks, nil, fn {key, %{spec: spec, doc: doc, args: args}}, acc ->
       vars = Enum.map(args, &Macro.var(&1, nil))
@@ -108,7 +108,7 @@ defmodule MaxoAdapt.Impl.Compile do
     end)
   end
 
-  @spec generate_stubs(MaxoAdapt.Utility.behavior(), term) :: term
+  @spec generate_stubs(MaxoAdapt.Utility.behaviour(), term) :: term
   defp generate_stubs(callbacks, result) do
     Enum.reduce(callbacks, nil, fn {key, %{spec: spec, doc: docs, args: args}}, acc ->
       quote do

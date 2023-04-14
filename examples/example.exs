@@ -2,7 +2,7 @@
 defmodule Storage do
   use MaxoAdapt, validate: true, mode: :compile, default: PostgreSQL
 
-  behavior do
+  behaviour do
     @doc ~S"Store an item"
     @callback store(item :: term) :: :ok | {:error, atom}
 

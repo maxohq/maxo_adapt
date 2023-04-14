@@ -28,13 +28,9 @@ defmodule MaxoAdapt do
 
     quote do
       require unquote(__MODULE__)
-      import unquote(__MODULE__), only: [behavior: 1, behaviour: 1]
+      import unquote(__MODULE__), only: [behaviour: 1]
     end
   end
-
-  @doc ~S"See `Adapter.behaviour/1`."
-  @spec behavior(callbacks :: [{:do, term}]) :: term
-  defmacro behavior(do: block), do: setup(__CALLER__.module, block)
 
   @doc ~S"""
   Define the adapter behaviour through callbacks.

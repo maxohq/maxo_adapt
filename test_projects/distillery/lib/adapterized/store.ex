@@ -1,7 +1,7 @@
 defmodule Storage do
   use MaxoAdapt, default: PostgreSQL, mode: :get_env
 
-  behavior do
+  behaviour do
     @doc ~S"Storage type."
     @callback type :: :persistent | :cache
   end

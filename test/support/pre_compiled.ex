@@ -10,7 +10,7 @@ defmodule PreCompiled do
   """
   use MaxoAdapt, mode: :compile, default: MaxoAdapt.CompileTest.Blue
 
-  behavior do
+  behaviour do
     @doc ~S"A color's RGB value."
     @callback rgb :: {0..255, 0..255, 0..255}
   end

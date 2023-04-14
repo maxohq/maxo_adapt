@@ -4,7 +4,7 @@ defmodule MaxoAdapt.Impl.GetEnvTest do
   defmodule Color do
     use MaxoAdapt, mode: :get_env, default: MaxoAdapt.Impl.GetEnvTest.Blue
 
-    behavior do
+    behaviour do
       @doc ~S"A color's RGB value."
       @callback rgb :: {0..255, 0..255, 0..255}
     end

@@ -24,7 +24,7 @@ defmodule MaxoAdaptTest do
   defmodule Storage do
     use MaxoAdapt, validate: true
 
-    behavior do
+    behaviour do
       @doc ~S"Store an item"
       @callback store(item :: term) :: :ok | {:error, atom}
 

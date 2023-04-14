@@ -1,7 +1,7 @@
 defmodule MaxoAdapt.Utility do
   @moduledoc false
 
-  @type behavior :: %{atom => %{spec: term, doc: binary, args: [atom]}}
+  @type behaviour :: %{atom => %{spec: term, doc: binary, args: [atom]}}
 
   @type config :: %{
           app: atom,
@@ -15,7 +15,7 @@ defmodule MaxoAdapt.Utility do
         }
 
   @doc false
-  @spec generate_validation(boolean, MaxoAdapt.Utility.behavior(), term) :: term
+  @spec generate_validation(boolean, MaxoAdapt.Utility.behaviour(), term) :: term
   def generate_validation(validate?, callbacks, var)
   def generate_validation(false, _callbacks, _var), do: quote(do: :ok)
 
@@ -101,7 +101,7 @@ defmodule MaxoAdapt.Utility do
   end
 
   @doc false
-  @spec analyze(term) :: {term, Adapter.Utility.behavior()}
+  @spec analyze(term) :: {term, Adapter.Utility.behaviour()}
   def analyze(block) do
     {code, {data, _, _, _}} = Macro.prewalk(block, {%{}, nil, nil, false}, &pre_walk/2)
     {code, data}
