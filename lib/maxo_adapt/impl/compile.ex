@@ -95,11 +95,10 @@ defmodule MaxoAdapt.Impl.Compile do
 
   @spec generate_compiled_delegates(MaxoAdapt.Utility.behaviour(), module) :: term
   defp generate_compiled_delegates(callbacks, target) do
-    Enum.reduce(callbacks, nil, fn {key, %{spec: spec, doc: doc, args: args}}, acc ->
+    Enum.map(callbacks, fn {key, %{spec: spec, doc: doc, args: args}} ->
       vars = Enum.map(args, &Macro.var(&1, nil))
 
       quote do
-        unquote(acc)
         unquote(doc)
         unquote(spec)
         def unquote(key)(unquote_splicing(vars))
@@ -110,9 +109,8 @@ defmodule MaxoAdapt.Impl.Compile do
 
   @spec generate_stubs(MaxoAdapt.Utility.behaviour(), term) :: term
   defp generate_stubs(callbacks, result) do
-    Enum.reduce(callbacks, nil, fn {key, %{spec: spec, doc: docs, args: args}}, acc ->
+    Enum.map(callbacks, fn {key, %{spec: spec, doc: docs, args: args}} ->
       quote do
-        unquote(acc)
         unquote(docs)
         unquote(spec)
         def unquote(key)(unquote_splicing(Enum.map(args, &Macro.var(&1, nil))))
@@ -125,11 +123,10 @@ defmodule MaxoAdapt.Impl.Compile do
 
   @spec regenerate_redirect([{atom, non_neg_integer()}], module) :: term
   defp regenerate_redirect(callbacks, target) do
-    Enum.reduce(callbacks, nil, fn {key, arity}, acc ->
+    Enum.map(callbacks, fn {key, arity} ->
       vars = if arity > 0, do: Enum.map(1..arity, &Macro.var(:"arg#{&1}", nil)), else: []
 
       quote do
-        unquote(acc)
         defdelegate unquote(key)(unquote_splicing(vars)), to: unquote(target)
       end
     end)

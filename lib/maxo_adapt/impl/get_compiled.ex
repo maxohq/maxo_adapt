@@ -58,12 +58,11 @@ defmodule MaxoAdapt.Impl.GetCompiled do
 
   @spec generate_errors(MaxoAdapt.Utility.behaviour(), term) :: term
   defp generate_errors(callbacks, error) do
-    Enum.reduce(callbacks, nil, fn {key, %{spec: spec, doc: doc, args: args}}, acc ->
+    Enum.map(callbacks, fn {key, %{spec: spec, doc: doc, args: args}} ->
       vars = Enum.map(args, &Macro.var(&1, nil))
       u_vars = Enum.map(args, &Macro.var(:"_#{&1}", nil))
 
       quote do
-        unquote(acc)
         unquote(doc)
         unquote(spec)
         def unquote(key)(unquote_splicing(vars))
@@ -74,11 +73,10 @@ defmodule MaxoAdapt.Impl.GetCompiled do
 
   @spec generate_implementation(MaxoAdapt.Utility.behaviour()) :: term
   defp generate_implementation(callbacks) do
-    Enum.reduce(callbacks, nil, fn {key, %{spec: spec, doc: doc, args: args}}, acc ->
+    Enum.map(callbacks, fn {key, %{spec: spec, doc: doc, args: args}} ->
       vars = Enum.map(args, &Macro.var(&1, nil))
 
       quote do
-        unquote(acc)
         unquote(doc)
         unquote(spec)
 
