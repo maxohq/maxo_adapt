@@ -7,6 +7,8 @@ defmodule MaxoAdapt.CompileTest do
     behaviour do
       @doc ~S"A color's RGB value."
       @callback rgb :: {0..255, 0..255, 0..255}
+      @callback first :: term
+      @callback second :: term
     end
 
     def red, do: elem(rgb(), 0)
@@ -17,6 +19,8 @@ defmodule MaxoAdapt.CompileTest do
 
     @impl Color
     def rgb, do: {255, 0, 0}
+    def first, do: 255
+    def second, do: 0
   end
 
   defmodule Green do
@@ -24,6 +28,8 @@ defmodule MaxoAdapt.CompileTest do
 
     @impl Color
     def rgb, do: {0, 255, 0}
+    def first, do: 0
+    def second, do: 255
   end
 
   defmodule Blue do
@@ -31,6 +37,8 @@ defmodule MaxoAdapt.CompileTest do
 
     @impl Color
     def rgb, do: {0, 0, 255}
+    def first, do: 0
+    def second, do: 0
   end
 
   test "allow switching adapters" do
