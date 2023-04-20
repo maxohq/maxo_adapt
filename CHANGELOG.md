@@ -1,6 +1,6 @@
 ## v0.1.3 (2023-04-21)
 
-- [Fix: debug logging works again](https://github.com/maxohq/maxo_adapt/commit/6650bf9)
+- [Fix: debug logging works again](https://github.com/maxohq/maxo_adapt/commit/e326331)
 
 ## v0.1.2 (2023-04-21)
 
