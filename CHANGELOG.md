@@ -1,3 +1,7 @@
+## v0.1.2 (2023-04-21)
+
+- [Feat: spec generation works also for callbacks with `when`](https://github.com/maxohq/maxo_adapt/commit/6650bf9)
+
 ## v0.1.1 (2023-04-14)
 
 - [Add configuration for debugging](https://github.com/maxohq/maxo_adapt/commit/cd44f601e166d128d20d52b3fbe9b8cc29595461)
