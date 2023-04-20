@@ -103,6 +103,7 @@ defmodule MaxoAdapt.Utility do
   @doc false
   @spec analyze(term) :: {term, Adapter.Utility.behaviour()}
   def analyze(block) do
+    MaxoAdapt.Log.inspect_ast(block, ">>>>>>> UTILITY.ANALYZE")
     {code, {data, _, _, _}} = Macro.prewalk(block, {%{}, nil, nil, false}, &pre_walk/2)
     {code, data}
   end
@@ -117,6 +118,30 @@ defmodule MaxoAdapt.Utility do
          ast = {:@, a, [{:callback, b, c = [{:"::", _, [{key, _, args} | _]}]}]},
          {acc, doc, _, _}
        ) do
+    argv =
+      if is_list(args) do
+        args
+        |> Enum.with_index()
+        |> Enum.map(fn
+          {{:"::", _, [{name, _, _} | _]}, _} -> name
+          {{_type, _, nil}, i} -> :"arg#{i}"
+        end)
+      else
+        []
+      end
+
+    {ast,
+     {Map.put(acc, key, %{spec: {:@, a, [{:spec, b, c}]}, doc: doc, args: argv}), nil, key, false}}
+  end
+
+  # Callback with when
+  defp pre_walk(
+         ast = {:@, a, [{:callback, b, c}]},
+         {acc, doc, _acc3, _acc4}
+       ) do
+    [{:when, _, [inner, _]}] = c
+    {:"::", _, [{key, _, args} | _]} = inner
+
     argv =
       if is_list(args) do
         args

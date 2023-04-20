@@ -27,9 +27,14 @@ defmodule MaxoAdapt.Impl.Compile do
     MaxoAdapt.Log.inspect_ast(ast, "Compile.generate: AST")
     Code.compile_quoted(ast)
 
+    MaxoAdapt.Log.inspect_ast(code, "Compile.generate: CODE")
+
+    inner_ast = generate_compiled_delegates(callbacks, Module.concat(MaxoAdapt, config.adapter))
+    MaxoAdapt.Log.inspect_ast(inner_ast, "Compile.generate: INNER_AST")
+
     quote do
       unquote(code)
-      unquote(generate_compiled_delegates(callbacks, Module.concat(MaxoAdapt, config.adapter)))
+      unquote(inner_ast)
 
       @doc false
       @spec __maxo_adapt__ :: module | nil
