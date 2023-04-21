@@ -1,0 +1,8 @@
+TODOS:
+
+- callback validation:
+    - ignore optional callbacks, so that there are not warnings and also the validation works properly
+    - @optional_callbacks init: 2
+    - complexity:
+        - middle
+
