@@ -20,6 +20,7 @@ defmodule MaxoAdapt.Impl.Compile do
       quote do
         defmodule unquote(Module.concat(MaxoAdapt, config.adapter)) do
           @moduledoc false
+          def __maxo_adapt__, do: unquote(nil)
           unquote(stubs)
         end
       end
