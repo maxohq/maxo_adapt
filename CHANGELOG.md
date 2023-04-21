@@ -1,3 +1,7 @@
+## v0.1.5 (2023-04-21)
+
+- [Feat: suppress recompilation warnings](https://github.com/maxohq/maxo_adapt/commit/8ac0c8d)
+
 ## v0.1.4 (2023-04-21)
 
 - [Feat: allow MaxAdapt behaviour specs that are injected via macros (eg. `use`)](https://github.com/maxohq/maxo_adapt/commit/638e19e)
