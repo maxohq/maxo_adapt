@@ -1,3 +1,3 @@
 import Config
 
-config :maxo_adapt, debug: true
+config :maxo_adapt, debug: false
