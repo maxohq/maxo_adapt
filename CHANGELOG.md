@@ -1,3 +1,7 @@
+## v0.1.4 (2023-04-21)
+
+- [Feat: allow MaxAdapt behaviour specs that are injected via macros (eg. `use`)](https://github.com/maxohq/maxo_adapt/commit/638e19e)
+
 ## v0.1.3 (2023-04-21)
 
 - [Fix: debug logging works again](https://github.com/maxohq/maxo_adapt/commit/e326331)
