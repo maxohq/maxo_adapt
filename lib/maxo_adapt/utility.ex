@@ -148,6 +148,7 @@ defmodule MaxoAdapt.Utility do
         |> Enum.with_index()
         |> Enum.map(fn
           {{:"::", _, [{name, _, _} | _]}, _} -> name
+          {[{:->, _, [_, {_, _, _}]}], i} -> :"fun#{i}"
           {{_type, _, nil}, i} -> :"arg#{i}"
         end)
       else
@@ -160,6 +161,7 @@ defmodule MaxoAdapt.Utility do
 
   defp pre_walk(ast = {:"::", _, [{key, _, _} | _]}, {acc, nil, key, false}),
     do: {ast, {acc, nil, key, true}}
+
 
   defp pre_walk(ast, acc), do: {ast, acc}
 end
