@@ -52,6 +52,8 @@ defmodule MaxoAdapt.Impl.Compile do
       """
       @spec configure(module) :: :ok
       def configure(adapter) do
+        Code.put_compiler_option(:ignore_module_conflict, true)
+
         with false <- __maxo_adapt__() == adapter && :ok,
              :ok <-
                unquote(
@@ -68,6 +70,7 @@ defmodule MaxoAdapt.Impl.Compile do
                  adapter
                ) do
           unquote(MaxoAdapt.Utility.generate_logger(log, Macro.var(:adapter, __MODULE__)))
+          Code.put_compiler_option(:ignore_module_conflict, false)
           :ok
         end
       end
