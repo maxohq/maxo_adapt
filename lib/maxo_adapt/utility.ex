@@ -153,6 +153,11 @@ defmodule MaxoAdapt.Utility do
       {{_type, _, _}, i} ->
         :"arg#{i}"
 
+
+      {[{_type, _, _}], i} ->
+        :"arg#{i}"
+
+
       {[{:->, _, [_, {_, _, _}]}], i} ->
         :"fun#{i}"
     end)
