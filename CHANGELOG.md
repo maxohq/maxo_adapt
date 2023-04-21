@@ -1,3 +1,7 @@
+## v0.1.7 (2023-04-22)
+
+- [Fix: also support single var in a list for arguments](https://github.com/maxohq/maxo_adapt/commit/57c2ee9)
+
 ## v0.1.6 (2023-04-21)
 
 - [Fix: make sure `__maxo_adapt__` function is always generated](https://github.com/maxohq/maxo_adapt/commit/084e42f)
