@@ -1,3 +1,7 @@
+## v0.1.6 (2023-04-21)
+
+- [Fix: make sure `__maxo_adapt__` function is always generated](https://github.com/maxohq/maxo_adapt/commit/084e42f)
+
 ## v0.1.5 (2023-04-21)
 
 - [Feat: suppress recompilation warnings](https://github.com/maxohq/maxo_adapt/commit/8ac0c8d)
