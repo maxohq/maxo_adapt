@@ -19,7 +19,9 @@ defmodule MaxoAdapt.CompileTest do
 
     @impl Color
     def rgb, do: {255, 0, 0}
+    @impl Color
     def first, do: 255
+    @impl Color
     def second, do: 0
   end
 
@@ -28,7 +30,9 @@ defmodule MaxoAdapt.CompileTest do
 
     @impl Color
     def rgb, do: {0, 255, 0}
+    @impl Color
     def first, do: 0
+    @impl Color
     def second, do: 255
   end
 
@@ -37,7 +41,9 @@ defmodule MaxoAdapt.CompileTest do
 
     @impl Color
     def rgb, do: {0, 0, 255}
+    @impl Color
     def first, do: 0
+    @impl Color
     def second, do: 0
   end
 
