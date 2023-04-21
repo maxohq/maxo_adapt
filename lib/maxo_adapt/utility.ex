@@ -118,23 +118,13 @@ defmodule MaxoAdapt.Utility do
          ast = {:@, a, [{:callback, b, c = [{:"::", _, [{key, _, args} | _]}]}]},
          {acc, doc, _, _}
        ) do
-    argv =
-      if is_list(args) do
-        args
-        |> Enum.with_index()
-        |> Enum.map(fn
-          {{:"::", _, [{name, _, _} | _]}, _} -> name
-          {{_type, _, nil}, i} -> :"arg#{i}"
-        end)
-      else
-        []
-      end
+    argv = process_prewalk_args(args)
 
     {ast,
      {Map.put(acc, key, %{spec: {:@, a, [{:spec, b, c}]}, doc: doc, args: argv}), nil, key, false}}
   end
 
-  # Callback with when
+  # Callback with `when`
   defp pre_walk(
          ast = {:@, a, [{:callback, b, c}]},
          {acc, doc, _acc3, _acc4}
@@ -142,18 +132,7 @@ defmodule MaxoAdapt.Utility do
     [{:when, _, [inner, _]}] = c
     {:"::", _, [{key, _, args} | _]} = inner
 
-    argv =
-      if is_list(args) do
-        args
-        |> Enum.with_index()
-        |> Enum.map(fn
-          {{:"::", _, [{name, _, _} | _]}, _} -> name
-          {[{:->, _, [_, {_, _, _}]}], i} -> :"fun#{i}"
-          {{_type, _, nil}, i} -> :"arg#{i}"
-        end)
-      else
-        []
-      end
+    argv = process_prewalk_args(args)
 
     {ast,
      {Map.put(acc, key, %{spec: {:@, a, [{:spec, b, c}]}, doc: doc, args: argv}), nil, key, false}}
@@ -162,6 +141,22 @@ defmodule MaxoAdapt.Utility do
   defp pre_walk(ast = {:"::", _, [{key, _, _} | _]}, {acc, nil, key, false}),
     do: {ast, {acc, nil, key, true}}
 
-
   defp pre_walk(ast, acc), do: {ast, acc}
+
+  defp process_prewalk_args(args) when is_list(args) do
+    args
+    |> Enum.with_index()
+    |> Enum.map(fn
+      {{:"::", _, [{name, _, _} | _]}, _} ->
+        name
+
+      {{_type, _, _}, i} ->
+        :"arg#{i}"
+
+      {[{:->, _, [_, {_, _, _}]}], i} ->
+        :"fun#{i}"
+    end)
+  end
+
+  defp process_prewalk_args(_), do: []
 end
