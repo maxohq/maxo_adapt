@@ -103,7 +103,7 @@ defmodule MaxoAdapt.Utility do
   @doc false
   @spec analyze(term) :: {term, Adapter.Utility.behaviour()}
   def analyze(block) do
-    MaxoAdapt.Log.inspect_ast(block, ">>>>>>> UTILITY.ANALYZE")
+    # MaxoAdapt.Log.inspect_ast(block, ">>>>>>> UTILITY.ANALYZE")
     {code, {data, _, _, _}} = Macro.prewalk(block, {%{}, nil, nil, false}, &pre_walk/2)
     {code, data}
   end
