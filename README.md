@@ -1,8 +1,10 @@
 # MaxoAdapt
 
-[![Hex.pm](https://img.shields.io/hexpm/v/maxo_adapt.svg)](https://hex.pm/packages/maxo_adapt)
-[![Docs](https://img.shields.io/badge/hexdocs-docs-8e7ce6.svg)](https://hexdocs.pm/maxo_adapt)
-[![CI](https://github.com/maxohq/maxo_adapt/actions/workflows/ci.yml/badge.svg)](https://github.com/maxohq/maxo_adapt/actions/workflows/ci.yml)
+[![CI](https://github.com/maxohq/maxo_adapt/actions/workflows/ci.yml/badge.svg?style=flat)](https://github.com/maxohq/maxo_adapt/actions/workflows/ci.yml)
+[![Hex.pm](https://img.shields.io/hexpm/v/maxo_adapt.svg?style=flat)](https://hex.pm/packages/maxo_adapt)
+[![Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg?style=flat)](https://hexdocs.pm/maxo_adapt)
+[![Total Download](https://img.shields.io/hexpm/dt/maxo_adapt.svg?style=flat)](https://hex.pm/packages/maxo_adapt)
+[![License](https://img.shields.io/hexpm/l/maxo_adapt.svg?style=flat)](https://github.com/maxohq/maxo_adapt/blob/main/LICENCE)
 
 `MaxoAdapt` is a fork from https://github.com/IanLuites/adapter with updates / fixes.
 
@@ -88,7 +90,6 @@ SessionRepo.configure(SessionRepo.Redis)
 ```
 
 The docs can be found at <https://hexdocs.pm/maxo_adapt>.
-
 
 ## Support
 
