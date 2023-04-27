@@ -1,3 +1,8 @@
+## v0.1.8 (2023-04-27)
+
+- [Feat: add new config: `:default_mode`](https://github.com/maxohq/maxo_adapt/commit/10c9ffe)
+- [Feat: add :get_dict mode for async tests](https://github.com/maxohq/maxo_adapt/commit/c5085e2)
+
 ## v0.1.7 (2023-04-22)
 
 - [Fix: also support single var in a list for arguments](https://github.com/maxohq/maxo_adapt/commit/57c2ee9)
