@@ -41,8 +41,15 @@ defmodule MaxoAdapt.Impl.GetDictTest do
     # Check adapter changes
     Enum.each([Red, Green, Blue], fn c ->
       assert Color.configure(c) == :ok
-      assert Color.rgb() == c.rgb()
-      assert Color.red() == elem(c.rgb(), 0)
+
+      # Check that it also works in subprocesses
+      t =
+        Task.async(fn ->
+          assert Color.rgb() == c.rgb()
+          assert Color.red() == elem(c.rgb(), 0)
+        end)
+
+      Task.await(t)
     end)
   end
 

@@ -1,8 +1,8 @@
 defmodule MaxoAdapt do
   @moduledoc false
+  alias MaxoAdapt.Config
 
   @default_app :maxo_adapt
-  @default_mode :compile
   @default_log :debug
   @default_random true
   @default_validate true
@@ -17,7 +17,7 @@ defmodule MaxoAdapt do
           | {:default, module}
           | {:error, :raise | atom}
           | {:log, false | :debug | :info | :notice}
-          | {:mode, :compile | :get_compiled | :get_env}
+          | {:mode, :compile | :get_compiled | :get_env | :get_dict}
           | {:random, boolean}
           | {:validate, boolean}
 
@@ -87,12 +87,15 @@ defmodule MaxoAdapt do
       validate: validate
     }
 
-    case Keyword.get(opts, :mode, @default_mode) do
+    case Keyword.get(opts, :mode, Config.default_mode()) do
       :compile ->
         {__MODULE__.Impl.Compile, config}
 
       :get_env ->
         {__MODULE__.Impl.GetEnv, config}
+
+      :get_dict ->
+        {__MODULE__.Impl.GetDict, config}
 
       :get_compiled ->
         {__MODULE__.Impl.GetCompiled, config}

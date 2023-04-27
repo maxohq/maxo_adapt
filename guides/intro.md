@@ -145,3 +145,39 @@ or in `:compile` mode the module is purged and recompiled with the new adapter.
 │                                 │          │                │
 └─────────────────────────────────┘          └────────────────┘
 ```
+
+## Mode: :get_dict
+
+- changes through `MaxoAdapt.ProcDict.get_with_ancestors(...)`
+- useful for tests
+- each test will have it's own adapter configuration without confliction with other tests
+- works with subprocesses
+
+```
+        ┌────────────────────────────────────────────────┐
+        │                 :get_dict mode                 │
+        │                                                │
+        └────────────────────────────────────────────────┘
+      ┌───────────────────────────────────────────────────┐
+      │                    config.exs                     │
+      │                                                   │
+      │    config :maxo_adapt, session_repo: PsqlRepo     │
+      │                                                   │
+      └───────────────────────────────────────────────────┘
+┌─────────────────────────────────┐          ┌────────────────┐
+│        SessionRepo              │          │                │
+│                                 │          │   PsqlRepo     │
+│- behaviour                      │          │                │
+│  - spec get!                    │    ┌────▶│- get!          │
+│  - spec store!                  │    │     │- store!        │
+│                                 │    │     │                │
+│- __maxo_adapt__ ->              │    │     └────────────────┘
+│                                 │────┘     ┌────────────────┐
+│  ProcDict.get_with_ancestors(..)│          │                │
+│                                 │          │   RedisRepo    │
+│- get! -> __maxo_adapt__().get!  │          │                │
+│- store! -> _maxo_adapt_().store!│          │- get!          │
+│                                 │          │- store!        │
+│                                 │          │                │
+└─────────────────────────────────┘          └────────────────┘
+```
