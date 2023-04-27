@@ -33,7 +33,7 @@ defmodule MaxoAdapt.Impl.Compile do
     inner_ast = generate_compiled_delegates(callbacks, Module.concat(MaxoAdapt, config.adapter))
     MaxoAdapt.Log.inspect_ast(inner_ast, "Compile.generate: INNER_AST")
 
-    quote do
+    quote location: :keep do
       unquote(code)
       unquote(inner_ast)
 

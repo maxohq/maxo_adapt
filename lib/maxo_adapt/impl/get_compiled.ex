@@ -8,7 +8,7 @@ defmodule MaxoAdapt.Impl.GetCompiled do
 
     err = MaxoAdapt.Utility.generate_error(error, random)
 
-    quote do
+    quote location: :keep do
       @adapter Application.compile_env(unquote(app), unquote(key), unquote(default))
 
       unquote(code)

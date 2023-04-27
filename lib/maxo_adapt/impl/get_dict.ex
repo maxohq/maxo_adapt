@@ -19,7 +19,7 @@ defmodule MaxoAdapt.Impl.GetDict do
         quote do: {:error, unquote(error)}
       end
 
-    quote do
+    quote location: :keep do
       unquote(code)
       ast = unquote(generate_implementation(callbacks, err))
       MaxoAdapt.Log.inspect_ast(ast, "GetDict.generate")
