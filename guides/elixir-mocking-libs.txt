@@ -1,0 +1,39 @@
+Patch:
+- https://github.com/ihumanable/patch
+- https://hexdocs.pm/patch/readme.html
+- https://discord.com/blog/why-and-how-discord-uses-patch-to-test-elixir
+
+Mimic
+- https://hex.pm/packages/mimic
+
+Mockery
+- https://github.com/appunite/mockery
+
+
+Dependency Injection:
+
+
+DefInject
+- https://github.com/jechol/definject
+- Unobtrusive Dependency Injector for Elixir
+
+
+Rewire
+- Dependency injection for Elixir. Zero code changes required.
+- https://hex.pm/packages/rewire
+- How does it deal with nested modules?
+    - Only the dependencies of the rewired module will be replaced.
+    - Any modules defined around the rewired module will be ignored.
+    - All references of the rewired module to them will be pointing to the original.
+    - You're always able to rewire them separately yourself.
+
+Resolve
+- https://github.com/amclain/resolve
+
+
+Injector - Simple dependency injection for Elixir. Suitable to use with Mox.
+- https://github.com/farhadi/injector
+
+
+Hook - A runtime resolution library. Useful for dependency injection and mocks.
+- https://hex.pm/packages/hook
