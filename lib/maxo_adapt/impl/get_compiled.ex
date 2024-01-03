@@ -18,7 +18,7 @@ defmodule MaxoAdapt.Impl.GetCompiled do
       else
         require Logger
 
-        Logger.warn(fn ->
+        Logger.warning(fn ->
           """
           [MaxoAdapt] #{inspect(__MODULE__)} is not configured.
               Mode `:get_compiled` adapters can not be changed at runtime.
