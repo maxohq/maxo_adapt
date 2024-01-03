@@ -1,3 +1,8 @@
+## v0.1.9 (2024-01-03)
+
+- [Fix: ProcDict - allow looking up processes by atoms](https://github.com/maxohq/maxo_adapt/commit/367f807)
+- [Chore: replace Logger.warn with Logger.warning](https://github.com/maxohq/maxo_adapt/commit/fa70ad5)
+
 ## v0.1.8 (2023-04-27)
 
 - [Feat: add new config: `:default_mode`](https://github.com/maxohq/maxo_adapt/commit/10c9ffe)
