@@ -42,6 +42,10 @@ defmodule MaxoAdapt.ProcDict do
     get_dict(pid) |> get(key)
   end
 
+  defp get_dict(atom) when is_atom(atom) do
+    get_dict(Process.whereis(atom))
+  end
+
   defp get_dict(pid) do
     Process.info(pid, :dictionary) |> elem(1)
   end
