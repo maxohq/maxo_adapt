@@ -1,5 +1,5 @@
 defmodule MaxoAdapt.Impl.GetDictAsyncTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   use MnemeDefaults
 
   defmodule Repo do
