@@ -1,3 +1,7 @@
+## v0.1.10 (2024-01-30)
+
+-  [Fix: fix error message with adapter mode names](https://github.com/maxohq/maxo_adapt/commit/9725e47)
+
 ## v0.1.9 (2024-01-03)
 
 - [Fix: ProcDict - allow looking up processes by atoms](https://github.com/maxohq/maxo_adapt/commit/367f807)
