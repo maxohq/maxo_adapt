@@ -103,7 +103,7 @@ defmodule MaxoAdapt do
       m ->
         raise CompileError,
           description:
-            "Invalid MaxoAdapt Mode: #{inspect(m)}. Only `:compiled`, `:get_compiled`, and `:get_env` are supported."
+            "Invalid MaxoAdapt Mode: #{inspect(m)}. Only `:compile`, `:get_compiled`, `:get_env` and `:get_dict` are supported."
     end
   end
 end
