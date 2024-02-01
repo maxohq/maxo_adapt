@@ -58,32 +58,32 @@ defmodule MaxoAdapt.Impl.GetCompiled do
 
   @spec generate_errors(MaxoAdapt.Utility.behaviour(), term) :: term
   defp generate_errors(callbacks, error) do
-    Enum.map(callbacks, fn {key, %{spec: spec, doc: doc, args: args}} ->
+    Enum.map(callbacks, fn {_key, %{spec: spec, doc: doc, args: args, name: name}} ->
       vars = Enum.map(args, &Macro.var(&1, nil))
       u_vars = Enum.map(args, &Macro.var(:"_#{&1}", nil))
 
       quote do
         unquote(doc)
         unquote(spec)
-        def unquote(key)(unquote_splicing(vars))
-        def unquote(key)(unquote_splicing(u_vars)), do: unquote(error)
+        def unquote(name)(unquote_splicing(vars))
+        def unquote(name)(unquote_splicing(u_vars)), do: unquote(error)
       end
     end)
   end
 
   @spec generate_implementation(MaxoAdapt.Utility.behaviour()) :: term
   defp generate_implementation(callbacks) do
-    Enum.map(callbacks, fn {key, %{spec: spec, doc: doc, args: args}} ->
+    Enum.map(callbacks, fn {_key, %{spec: spec, doc: doc, args: args, name: name}} ->
       vars = Enum.map(args, &Macro.var(&1, nil))
 
       quote do
         unquote(doc)
         unquote(spec)
 
-        def unquote(key)(unquote_splicing(vars))
+        def unquote(name)(unquote_splicing(vars))
 
-        def unquote(key)(unquote_splicing(vars)) do
-          @adapter.unquote(key)(unquote_splicing(vars))
+        def unquote(name)(unquote_splicing(vars)) do
+          @adapter.unquote(name)(unquote_splicing(vars))
         end
       end
     end)

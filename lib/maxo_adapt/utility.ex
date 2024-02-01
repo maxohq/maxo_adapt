@@ -20,7 +20,7 @@ defmodule MaxoAdapt.Utility do
   def generate_validation(false, _callbacks, _var), do: quote(do: :ok)
 
   def generate_validation(true, callbacks, var) do
-    spec = Enum.map(callbacks, fn {k, %{args: a}} -> {k, Enum.count(a)} end)
+    spec = Enum.map(callbacks, fn {_k, %{args: args, name: name}} -> {name, Enum.count(args)} end)
 
     quote do
       require Logger
@@ -119,9 +119,19 @@ defmodule MaxoAdapt.Utility do
          {acc, doc, _, _}
        ) do
     argv = process_prewalk_args(args)
+    ### useful in local dev
+    # IO.inspect(key, label: "key")
+    # IO.inspect(argv, label: "argv")
+    # IO.inspect(ast, label: "ast")
+    # IO.inspect(acc, label: "acc")
 
     {ast,
-     {Map.put(acc, key, %{spec: {:@, a, [{:spec, b, c}]}, doc: doc, args: argv}), nil, key, false}}
+     {Map.put(acc, to_map_key(key, argv), %{
+        spec: {:@, a, [{:spec, b, c}]},
+        doc: doc,
+        name: key,
+        args: argv
+      }), nil, key, false}}
   end
 
   # Callback with `when`
@@ -135,13 +145,22 @@ defmodule MaxoAdapt.Utility do
     argv = process_prewalk_args(args)
 
     {ast,
-     {Map.put(acc, key, %{spec: {:@, a, [{:spec, b, c}]}, doc: doc, args: argv}), nil, key, false}}
+     {Map.put(acc, to_map_key(key, argv), %{
+        spec: {:@, a, [{:spec, b, c}]},
+        doc: doc,
+        name: key,
+        args: argv
+      }), nil, key, false}}
   end
 
   defp pre_walk(ast = {:"::", _, [{key, _, _} | _]}, {acc, nil, key, false}),
     do: {ast, {acc, nil, key, true}}
 
   defp pre_walk(ast, acc), do: {ast, acc}
+
+  defp to_map_key(name, argv) do
+    {name, argv}
+  end
 
   defp process_prewalk_args(args) when is_list(args) do
     args

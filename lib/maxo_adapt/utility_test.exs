@@ -4,6 +4,114 @@ defmodule MaxoAdapt.UtilityTest do
   alias MaxoAdapt.Utility
 
   describe "analyze" do
+    test "callbacks with multiple function heads" do
+      block =
+        quote do
+          @callback get(path :: binary) :: any()
+          @callback get(path :: binary, query :: map()) :: any()
+        end
+
+      auto_assert(
+        """
+        @callback get(path :: binary) :: any()
+        @callback get(path :: binary, query :: map()) :: any()\
+        """ <- Macro.to_string(block)
+      )
+
+      {code, callbacks} = Utility.analyze(block)
+
+      auto_assert(
+        %{
+          {:get, [:path]} => %{
+            args: [:path],
+            doc: nil,
+            name: :get,
+            spec:
+              {:@, [context: MaxoAdapt.UtilityTest, imports: [{1, Kernel}]],
+               [
+                 {:spec, [context: MaxoAdapt.UtilityTest],
+                  [
+                    {:"::", [],
+                     [
+                       {:get, [],
+                        [
+                          {:"::", [],
+                           [
+                             {:path, [], MaxoAdapt.UtilityTest},
+                             {:binary, [], MaxoAdapt.UtilityTest}
+                           ]}
+                        ]},
+                       {:any, [], []}
+                     ]}
+                  ]}
+               ]}
+          },
+          {:get, [:path, :query]} => %{
+            args: [:path, :query],
+            doc: nil,
+            name: :get,
+            spec:
+              {:@, [context: MaxoAdapt.UtilityTest, imports: [{1, Kernel}]],
+               [
+                 {:spec, [context: MaxoAdapt.UtilityTest],
+                  [
+                    {:"::", [],
+                     [
+                       {:get, [],
+                        [
+                          {:"::", [],
+                           [
+                             {:path, [], MaxoAdapt.UtilityTest},
+                             {:binary, [], MaxoAdapt.UtilityTest}
+                           ]},
+                          {:"::", [], [{:query, [], MaxoAdapt.UtilityTest}, {:map, [], []}]}
+                        ]},
+                       {:any, [], []}
+                     ]}
+                  ]}
+               ]}
+          }
+        } <- callbacks
+      )
+
+      auto_assert(
+        {:__block__, [],
+         [
+           {:@, [context: MaxoAdapt.UtilityTest, imports: [{1, Kernel}]],
+            [
+              {:callback, [context: MaxoAdapt.UtilityTest],
+               [
+                 {:"::", [],
+                  [
+                    {:get, [],
+                     [
+                       {:"::", [],
+                        [{:path, [], MaxoAdapt.UtilityTest}, {:binary, [], MaxoAdapt.UtilityTest}]}
+                     ]},
+                    {:any, [], []}
+                  ]}
+               ]}
+            ]},
+           {:@, [context: MaxoAdapt.UtilityTest, imports: [{1, Kernel}]],
+            [
+              {:callback, [context: MaxoAdapt.UtilityTest],
+               [
+                 {:"::", [],
+                  [
+                    {:get, [],
+                     [
+                       {:"::", [],
+                        [{:path, [], MaxoAdapt.UtilityTest}, {:binary, [], MaxoAdapt.UtilityTest}]},
+                       {:"::", [], [{:query, [], MaxoAdapt.UtilityTest}, {:map, [], []}]}
+                     ]},
+                    {:any, [], []}
+                  ]}
+               ]}
+            ]}
+         ]} <- code
+      )
+    end
+
     test "callbacks with when condition" do
       block =
         quote do
@@ -34,11 +142,12 @@ defmodule MaxoAdapt.UtilityTest do
 
       auto_assert(
         %{
-          insert_all: %{
+          {:insert_all, [:schema_or_source, :entries_or_query, :opts]} => %{
             args: [:schema_or_source, :entries_or_query, :opts],
             doc:
               {:@, [context: MaxoAdapt.UtilityTest, imports: [{1, Kernel}]],
                [{:doc, [context: MaxoAdapt.UtilityTest], [[group: "Schema API"]]}]},
+            name: :insert_all,
             spec:
               {:@, [context: MaxoAdapt.UtilityTest, imports: [{1, Kernel}]],
                [
@@ -125,7 +234,7 @@ defmodule MaxoAdapt.UtilityTest do
 
       auto_assert(
         %{
-          rgb: %{
+          {:rgb, []} => %{
             args: [],
             doc:
               {:@, [context: MaxoAdapt.UtilityTest, imports: [{1, Kernel}]],
@@ -137,6 +246,7 @@ defmodule MaxoAdapt.UtilityTest do
                      [{:<<>>, [], ["A color's RGB value."]}, []]}
                   ]}
                ]},
+            name: :rgb,
             spec:
               {:@, [context: MaxoAdapt.UtilityTest, imports: [{1, Kernel}]],
                [

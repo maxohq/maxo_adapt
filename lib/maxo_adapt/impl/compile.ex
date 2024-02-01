@@ -7,7 +7,9 @@ defmodule MaxoAdapt.Impl.Compile do
 
   def generate(code, callbacks, config) do
     %{default: default, error: error, log: log, random: random, validate: validate} = config
-    simple_callbacks = Enum.map(callbacks, fn {k, %{args: args}} -> {k, Enum.count(args)} end)
+
+    simple_callbacks =
+      Enum.map(callbacks, fn {_, %{args: args, name: name}} -> {name, Enum.count(args)} end)
 
     stubs =
       if default do
@@ -104,27 +106,27 @@ defmodule MaxoAdapt.Impl.Compile do
 
   @spec generate_compiled_delegates(MaxoAdapt.Utility.behaviour(), module) :: term
   defp generate_compiled_delegates(callbacks, target) do
-    Enum.map(callbacks, fn {key, %{spec: spec, doc: doc, args: args}} ->
+    Enum.map(callbacks, fn {_key, %{spec: spec, doc: doc, args: args, name: name}} ->
       vars = Enum.map(args, &Macro.var(&1, nil))
 
       quote do
         unquote(doc)
         unquote(spec)
-        def unquote(key)(unquote_splicing(vars))
-        defdelegate unquote(key)(unquote_splicing(vars)), to: unquote(target)
+        def unquote(name)(unquote_splicing(vars))
+        defdelegate unquote(name)(unquote_splicing(vars)), to: unquote(target)
       end
     end)
   end
 
   @spec generate_stubs(MaxoAdapt.Utility.behaviour(), term) :: term
   defp generate_stubs(callbacks, result) do
-    Enum.map(callbacks, fn {key, %{spec: spec, doc: docs, args: args}} ->
+    Enum.map(callbacks, fn {_key, %{spec: spec, doc: docs, args: args, name: name}} ->
       quote do
         unquote(docs)
         unquote(spec)
-        def unquote(key)(unquote_splicing(Enum.map(args, &Macro.var(&1, nil))))
+        def unquote(name)(unquote_splicing(Enum.map(args, &Macro.var(&1, nil))))
 
-        def unquote(key)(unquote_splicing(Enum.map(args, &Macro.var(:"_#{&1}", nil)))),
+        def unquote(name)(unquote_splicing(Enum.map(args, &Macro.var(:"_#{&1}", nil)))),
           do: unquote(result)
       end
     end)

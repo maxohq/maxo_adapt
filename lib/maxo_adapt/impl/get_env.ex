@@ -64,17 +64,17 @@ defmodule MaxoAdapt.Impl.GetEnv do
 
   @spec generate_implementation(MaxoAdapt.Utility.behaviour(), term) :: term
   defp generate_implementation(callbacks, error) do
-    Enum.map(callbacks, fn {key, %{spec: spec, doc: doc, args: a}} ->
-      vars = Enum.map(a, &Macro.var(&1, nil))
+    Enum.map(callbacks, fn {key, %{spec: spec, doc: doc, args: args, name: name}} ->
+      vars = Enum.map(args, &Macro.var(&1, nil))
 
       quote do
         unquote(doc)
         unquote(spec)
-        def unquote(key)(unquote_splicing(vars))
+        def unquote(name)(unquote_splicing(vars))
 
-        def unquote(key)(unquote_splicing(vars)) do
+        def unquote(name)(unquote_splicing(vars)) do
           if adapter = __maxo_adapt__(),
-            do: adapter.unquote(key)(unquote_splicing(vars)),
+            do: adapter.unquote(name)(unquote_splicing(vars)),
             else: unquote(error)
         end
       end
