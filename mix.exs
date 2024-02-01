@@ -1,7 +1,7 @@
 defmodule MaxoAdapt.MixProject do
   use Mix.Project
   @github_url "https://github.com/maxohq/maxo_adapt"
-  @version "0.1.10"
+  @version "0.1.11"
   @description "MaxoAdapt provides fast, safe and clean adapter pattern implementation for Elixir"
 
   def project do

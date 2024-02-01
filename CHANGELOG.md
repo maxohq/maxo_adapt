@@ -1,3 +1,7 @@
+## v0.1.11 (2024-02-01)
+
+- [Fix: support for multiple functions with same name and different arity](https://github.com/maxohq/maxo_adapt/commit/098a599)
+
 ## v0.1.10 (2024-01-30)
 
 -  [Fix: fix error message with adapter mode names](https://github.com/maxohq/maxo_adapt/commit/9725e47)
