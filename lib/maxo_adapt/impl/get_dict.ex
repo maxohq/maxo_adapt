@@ -65,7 +65,7 @@ defmodule MaxoAdapt.Impl.GetDict do
 
   @spec generate_implementation(MaxoAdapt.Utility.behaviour(), term) :: term
   defp generate_implementation(callbacks, error) do
-    Enum.map(callbacks, fn {key, %{spec: spec, doc: doc, args: args, name: name}} ->
+    Enum.map(callbacks, fn {_key, %{spec: spec, doc: doc, args: args, name: name}} ->
       vars = Enum.map(args, &Macro.var(&1, nil))
 
       quote do
